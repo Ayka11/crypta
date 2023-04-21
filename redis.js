@@ -2,23 +2,63 @@
 
 /*
 |--------------------------------------------------------------------------
-| Redis Subscribers
+| Redis Configuaration
 |--------------------------------------------------------------------------
 |
-| Here you can register the subscribers to redis channels. Adonis assumes
-| your listeners are stored inside `app/Listeners` directory.
+| Here we define the configuration for redis server. A single application
+| can make use of multiple redis connections using the redis provider.
 |
 */
 
-// const Redis = use('Redis')
+const Env = use('Env')
 
-/**
- * Inline subscriber
- */
-// Redis.subscribe('news', async () => {
-// })
+module.exports = {
+  /*
+  |--------------------------------------------------------------------------
+  | connection
+  |--------------------------------------------------------------------------
+  |
+  | Redis connection to be used by default.
+  |
+  */
+  connection: Env.get('REDIS_CONNECTION', 'local'),
 
-/**
- * Binding method from a module saved inside `app/Listeners/News`
- */
-// Redis.subcribe('news', 'News.onMessage')
+  /*
+  |--------------------------------------------------------------------------
+  | local connection config
+  |--------------------------------------------------------------------------
+  |
+  | Configuration for a named connection.
+  |
+  */
+  local: {
+    host: 'mail.tempmailpro.net',
+    port: 6379,
+    password:'@!yout123',
+    db: 0,
+    keyPrefix: ''
+  },
+
+  /*
+  |--------------------------------------------------------------------------
+  | cluster config
+  |--------------------------------------------------------------------------
+  |
+  | Below is the configuration for the redis cluster.
+  |
+  */
+  cluster: {
+    clusters: [{
+      host: '127.0.0.1',
+      port: 6379,
+      password: null,
+      db: 0
+    },
+    {
+      host: '127.0.0.1',
+      port: 6380,
+      password: null,
+      db: 0
+    }]
+  }
+}
